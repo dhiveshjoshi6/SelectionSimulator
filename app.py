@@ -52,6 +52,47 @@ if st.button("Run New Simulation"):
                           hover_data=["Candidate"])
     st.plotly_chart(fig_total)
 
+    # Analysis of multiple simulations
+    if st.session_state.simulation_history:
+        st.subheader("Multiple Simulation Analysis")
+
+        # Calculate selection frequencies
+        all_selections = [item for sublist in st.session_state.simulation_history for item in sublist]
+        selection_freq = pd.Series(all_selections).value_counts()
+
+        # Display selection statistics
+        total_simulations = len(st.session_state.simulation_history)
+        st.markdown(f"**Total Simulations Run:** {total_simulations}")
+
+        # Show selection frequency
+        st.markdown("### Selection Frequency")
+        fig_freq = px.bar(selection_freq, 
+                          title="Number of Times Each Candidate Was Selected",
+                          labels={'index': 'Candidate', 'value': 'Times Selected'})
+        st.plotly_chart(fig_freq)
+
+        # Calculate and display interesting statistics
+        most_selected = selection_freq.index[0]
+        never_selected = len(set(st.session_state.simulator.candidates) - set(selection_freq.index))
+
+        st.markdown(f"""
+        ### Key Insights
+        - Most frequently selected: **{most_selected}** ({selection_freq.iloc[0]} times)
+        - Number of candidates never selected: **{never_selected}**
+        - Selection variability shows the impact of the 5% luck factor
+        """)
+
+        # Calculate consistency metrics
+        consistent_top10 = selection_freq[selection_freq >= total_simulations * 0.8].count()
+        avg_appearances = selection_freq.mean()
+
+        st.markdown(f"""
+        ### Selection Consistency
+        - Candidates appearing in >80% of simulations: **{consistent_top10}**
+        - Average times a candidate appears: **{avg_appearances:.1f}**
+        - Probability of same exact top 10: Very low due to luck factor
+        """)
+
     # Show how many times the simulation has been run
     st.markdown(f"**Total simulations run:** {len(st.session_state.simulation_history)}")
 
