@@ -14,6 +14,7 @@ class SelectionSimulator:
             print("Debug: Initializing SelectionSimulator")
             self.num_candidates = num_candidates
             # Generate static skill scores (92-100 range for tight competition)
+            # These scores remain fixed for each candidate throughout all simulations
             self.skill_scores = np.random.normal(96, 1, num_candidates)
             # Clip scores to ensure they're between 92 and 100
             self.skill_scores = np.clip(self.skill_scores, 92, 100)
@@ -26,7 +27,8 @@ class SelectionSimulator:
 
     def generate_luck_scores(self):
         try:
-            # Generate random luck scores (0-100)
+            # Generate new random luck scores (0-100) for each simulation run
+            # These scores change with every simulation
             return np.random.uniform(0, 100, self.num_candidates)
         except Exception as e:
             print(f"Debug: Error generating luck scores: {str(e)}")
@@ -34,6 +36,7 @@ class SelectionSimulator:
 
     def run_simulation(self):
         try:
+            # Generate new luck scores for this simulation run
             luck_scores = self.generate_luck_scores()
 
             # Calculate weighted scores (95% skill, 5% luck)
