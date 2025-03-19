@@ -4,3 +4,7 @@ enableCORS = false
 enableXsrfProtection = false
 address = "0.0.0.0"
 port = 5000
+
+[browser]
+serverAddress = "0.0.0.0"
+serverPort = 5000

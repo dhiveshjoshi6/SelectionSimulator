@@ -1,28 +1,14 @@
 import streamlit as st
-import numpy as np
-import pandas as pd
-import plotly.express as px
 
-# Set page title
-st.title("Selection Simulation Demo")
+print("Debug: Starting minimal Streamlit app")
 
-# Add a basic counter to test state
-if 'counter' not in st.session_state:
-    st.session_state.counter = 0
+st.set_page_config(
+    page_title="Selection Simulation",
+    layout="wide"
+)
 
-# Display basic interactive elements
-st.write("Testing basic functionality")
+st.title("Selection Simulation")
+st.write("Basic test to verify server functionality")
 
-if st.button("Increment Counter"):
-    st.session_state.counter += 1
-
-st.write(f"Counter value: {st.session_state.counter}")
-
-# Test data visualization
-test_data = pd.DataFrame({
-    'x': np.random.randn(100),
-    'y': np.random.randn(100)
-})
-
-st.write("Test Plot")
-st.plotly_chart(px.scatter(test_data, x='x', y='y'))
+if st.button("Test Button"):
+    st.success("Button clicked!")
