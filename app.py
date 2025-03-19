@@ -57,7 +57,9 @@ col1, col2, col3 = st.columns([2, 1, 1])
 with col1:
     run_sim = st.button("Run New Simulation")
 with col2:
-    st.metric("Total Simulations", len(st.session_state.simulation_history))
+    # Add 1 to show actual number of simulations (starting from 1)
+    simulation_count = len(st.session_state.simulation_history) + 1
+    st.metric("Simulation #", simulation_count)
 with col3:
     reset_sim = st.button("Reset Simulation")
 
