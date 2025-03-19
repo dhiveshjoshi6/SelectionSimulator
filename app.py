@@ -16,13 +16,29 @@ if 'simulator' not in st.session_state:
 
 st.title("Selection Simulation: Impact of Luck")
 
+# Experiment explanation and formula
 st.markdown("""
-This simulation demonstrates how luck can affect outcomes even when skill differences are minimal:
-- Each candidate has a **fixed skill score** (92-100 range) that doesn't change between runs
-- A **random luck score** (0-100) is generated for each candidate in every new simulation
-- Final score: 95% skill + 5% luck
+### 🎯 Aim of the Experiment
+This experiment explores how a small random factor (luck) can influence outcomes in highly competitive scenarios where candidates have very similar skill levels.
 
-Try running the simulation multiple times to see how luck can change the outcomes!
+### 📊 How it Works
+1. **Skill Scores** (92-100 range):
+   - Fixed for each candidate
+   - Represents inherent ability
+   - Stays constant across all simulation runs
+
+2. **Luck Scores** (0-100 range):
+   - Random for each candidate
+   - Changes in every simulation run
+   - Represents external factors/chance
+
+### 🔢 Formula Used
+```
+Final Score = (0.95 × Skill Score) + (0.05 × Luck Score)
+```
+- 95% weight given to skill
+- 5% weight given to luck
+- Top 10 candidates are selected based on final score
 """)
 
 # Display static skill scores
