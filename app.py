@@ -34,8 +34,18 @@ fig_skill = px.histogram(skill_df, x="Skill Score",
                         nbins=20)
 st.plotly_chart(fig_skill)
 
-# Run simulation button
-if st.button("Run New Simulation"):
+# Create columns for simulation controls
+col1, col2, col3 = st.columns([2, 1, 1])
+
+# Run simulation button with counter
+with col1:
+    run_sim = st.button("Run New Simulation")
+with col2:
+    st.metric("Total Simulations", len(st.session_state.simulation_history))
+with col3:
+    reset_sim = st.button("Reset Simulation")
+
+if run_sim:
     results = st.session_state.simulator.run_simulation()
     st.session_state.simulation_history.append(results.head(10)['Candidate'].tolist())
 
@@ -60,10 +70,6 @@ if st.button("Run New Simulation"):
         all_selections = [item for sublist in st.session_state.simulation_history for item in sublist]
         selection_freq = pd.Series(all_selections).value_counts()
 
-        # Display selection statistics
-        total_simulations = len(st.session_state.simulation_history)
-        st.markdown(f"**Total Simulations Run:** {total_simulations}")
-
         # Show selection frequency
         st.markdown("### Selection Frequency")
         fig_freq = px.bar(selection_freq, 
@@ -83,7 +89,7 @@ if st.button("Run New Simulation"):
         """)
 
         # Calculate consistency metrics
-        consistent_top10 = selection_freq[selection_freq >= total_simulations * 0.8].count()
+        consistent_top10 = selection_freq[selection_freq >= len(st.session_state.simulation_history) * 0.8].count()
         avg_appearances = selection_freq.mean()
 
         st.markdown(f"""
@@ -93,11 +99,7 @@ if st.button("Run New Simulation"):
         - Probability of same exact top 10: Very low due to luck factor
         """)
 
-    # Show how many times the simulation has been run
-    st.markdown(f"**Total simulations run:** {len(st.session_state.simulation_history)}")
-
-# Reset button
-if st.button("Reset Simulation"):
+if reset_sim:
     st.warning("This will generate new fixed skill scores for all candidates")
     st.session_state.simulator = SelectionSimulator()
     st.session_state.simulation_history = []
